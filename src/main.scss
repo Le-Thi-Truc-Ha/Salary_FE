@@ -11,6 +11,14 @@
     font-family: "Quicksand", sans-serif;
 }
 
+body {
+    background-color: var(--backgroundColor);
+}
+
+.page-container {
+    min-height: calc(100vh - 90px);
+}
+
 //Màu gốc: #f84c2f
 
 //Màu hover: #fb6445

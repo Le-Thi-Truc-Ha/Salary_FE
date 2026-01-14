@@ -11,7 +11,7 @@ const PrivateRoute = ({children, roleId}: PrivateRouteProps): JSX.Element => {
     const {user} = useContext(UserContext);
     
     if (!user.isAuthenticated) {
-        return <Navigate to="/login" replace />
+        return <Navigate to="/" replace />
     }
 
     if (user.roleId != roleId) {

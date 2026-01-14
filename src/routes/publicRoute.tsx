@@ -9,7 +9,11 @@ interface PublicRouteProps {
 const PublicRoute = ({children}: PublicRouteProps): JSX.Element => {
     const {user} = useContext(UserContext);
     if (user.isAuthenticated) {
-        return <Navigate to="/" replace />
+        if (user.roleId == 1) {
+            return <Navigate to="/admin/home" replace />
+        } else {
+            return <Navigate to="/employee/home" replace />
+        }
     }
     
     return(

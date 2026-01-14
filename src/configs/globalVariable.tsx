@@ -7,7 +7,6 @@ export interface UserType {
     isAuthenticated: boolean;
     roleId: number;
     accountId: number;
-    googleLogin: boolean;
 }
 
 interface UserContextType {
@@ -18,7 +17,7 @@ interface UserContextType {
 }
 
 export const UserContext = createContext<UserContextType>({
-    user: {isAuthenticated: false, roleId: -1, accountId: -1, googleLogin: false},
+    user: {isAuthenticated: false, roleId: -1, accountId: -1},
     loginContext: () => {},
     logoutContext: () => {},
     isLoading: false
@@ -29,7 +28,7 @@ interface UserProviderProps {
 }
 
 export const UserProvider = ({children}: UserProviderProps): JSX.Element => {
-    const userDefault: UserType = {isAuthenticated: false, roleId: -1, accountId: -1, googleLogin: false};
+    const userDefault: UserType = {isAuthenticated: false, roleId: -1, accountId: -1};
     const [user, setUser] = useState<UserType>(userDefault);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const navigate = useNavigate();
@@ -45,9 +44,8 @@ export const UserProvider = ({children}: UserProviderProps): JSX.Element => {
             if (result.code == 0) {
                 const userData: UserType = {
                     isAuthenticated: true,
-                    accountId: result.data.id,
-                    roleId: result.data.roleId,
-                    googleLogin: result.data.googleLogin
+                    accountId: result.data.accountId,
+                    roleId: result.data.roleId
                 }
                 setUser(userData);
             } else {

@@ -1,0 +1,109 @@
+.header-employee-container {
+    position: sticky;
+    top: 0px;
+    margin-bottom: 10px;
+    background-color: white;
+    height: 60px;
+    z-index: 100;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    .menu-icon {
+        width: 35px;
+        height: 0.1px;
+        background-color: black;
+        cursor: pointer;
+    }
+    .close-icon {
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        &:hover {
+            stroke: #848484;
+        }
+    }
+}
+
+.menu-outlet-container {
+    padding: 0px 10px;
+    .menu-static {
+        background-color: white;
+        width: 96%;
+        border-radius: 20px;
+        padding: 20px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .menu-item {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        border-radius: 10px;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        &:hover {
+            background-color: var(--backgroundColor);
+        }
+    }
+    .menu-item-name {
+        font-size: 20px;
+    }
+    .menu-item-active {
+        cursor: pointer;
+        background-color: #e0e0e0;
+        &:hover {
+            background-color: #e0e0e0;
+        }
+    }
+    .outlet {
+        background-color: white;
+        width: 96%;
+        border-radius: 20px;
+        padding: 20px;
+
+        @media (max-width: 426px) {
+            padding: 10px;
+        }
+    }
+}
+
+.menu-dynamic {
+    position: fixed;
+    top: 60px;
+    background-color: white;
+    width: 50%;
+    height: 100%;
+    z-index: 101;
+    padding: 10px 20px;
+
+    .menu-item-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .menu-item {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        border-radius: 10px;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        &:hover {
+            background-color: var(--backgroundColor);
+        }
+    }
+    .menu-item-name {
+        font-size: 20px;
+    }
+    .menu-item-active {
+        cursor: pointer;
+        background-color: #e0e0e0;
+        &:hover {
+            background-color: #e0e0e0;
+        }
+    }
+
+    @media (max-width: 426px) {
+        width: 80%;
+    }
+}

@@ -1,10 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import "./NotFound.scss";
+import { useContext } from "react";
+import { UserContext } from "../../configs/globalVariable";
 
 const NotFound = () => {
     const navigate = useNavigate();
+    const {user} = useContext(UserContext);
     const goHome = () => {
-        return navigate("/");
+        if (!user.isAuthenticated) {
+            return navigate("/");
+        } else {
+            if (user.roleId == 1) {
+                return navigate("/admin/home");
+            } else {
+                return navigate("/employee/home");
+            }
+        }
     }
     
     return (

@@ -1,0 +1,46 @@
+.login-container {
+    background-color: #f8fbff;
+    height: 100vh;
+    .first-block {
+        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        border: 0.1px solid rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
+    img {
+        width: 140px;
+    }
+    .title {
+        font-weight: 500;
+        font-size: 35px;
+    }
+    .btn-login {
+        width: 100%;
+    }
+    .forgot-password {
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 14px;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0px; 
+            width: 0;
+            height: 0.1px;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+
+        &:hover::after {
+            width: 100%;
+        }
+    }
+}
