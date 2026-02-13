@@ -58,7 +58,7 @@ const UpdateShiftModal = ({open, setOpen, shiftId, dateProp, timeIn, timeOut, se
                     if (newTime) {
                         result += newTime;
                     }
-                    return result;
+                    return Math.round(result * 100) / 100;
                 })
             } else {
                 messageService.error(result.message);
