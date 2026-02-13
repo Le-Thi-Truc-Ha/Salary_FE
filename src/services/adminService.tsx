@@ -28,3 +28,9 @@ export const deleteEmployeeApi = (employeeId: number): Promise<BackendResponse> 
         employeeId
     })
 }
+
+export const updateShiftApi = (shiftId: number, timeIn: string, timeOut: string | null): Promise<BackendResponse> => {
+    return axios.post("/admin/update-shift", {
+        shiftId, timeIn, timeOut
+    })
+}

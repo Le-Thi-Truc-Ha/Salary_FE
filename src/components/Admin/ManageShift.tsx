@@ -1,10 +1,14 @@
-import { Col, Row, Select, Table, type TableProps } from "antd";
+import { Col, Grid, Row, Select, Table, type TableProps } from "antd";
 import { useEffect, useState, type JSX } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { messageService, type BackendResponse } from "../../interfaces/appInterface";
 import type { ShiftData, ShiftTable } from "../../interfaces/employeeInterface";
 import dayjs from "dayjs";
 import { getShiftsApi } from "../../services/adminService";
+import { Pencil } from "lucide-react";
+import UpdateShiftModal from "./UpdateShiftModal";
+
+const {useBreakpoint} = Grid;
 
 const ManageShift = (): JSX.Element => {
     const yearNow = dayjs().year();
@@ -13,11 +17,15 @@ const ManageShift = (): JSX.Element => {
     const {employeeId} = useParams();
     const navigate = useNavigate();
 
+    const screen = useBreakpoint();
+
     const [getShiftsLoading, setGetShiftsLoading] = useState<boolean>(false);
     const [shifts, setShifts] = useState<ShiftTable[]>([]);
     const [totalHour, setTotalHour] = useState<number>(0);
     const [month, setMonth] = useState<number>(dayjs().month() + 1);
     const [year, setYear] = useState<number>(dayjs().year());
+    const [openUpdate, setOpenUpdate] = useState<boolean>(false);
+    const [shiftSelect, setShiftSelect] = useState<ShiftTable>({key: "", id: -1, date: dayjs(), timeIn: dayjs(), timeOut: null, time: null})
 
     const columns: TableProps<ShiftTable>["columns"] = [
         {
@@ -32,18 +40,54 @@ const ManageShift = (): JSX.Element => {
             title: "Ngày",
             key: "date",
             dataIndex: "date",
+            width: 180,
+            render: (value) =>(
+                <div>{value.format("DD/MM/YYYY")}</div>
+            ),
             align: "center"
         },
         {
             title: "Vào Ca",
             key: "timeIn",
             dataIndex: "timeIn",
+            render: (value) => (
+                <div>{value.format("HH:mm")}</div>
+            ),
             align: "center"
         },
         {
             title: "Ra Ca",
             key: "timeOut",
             dataIndex: "timeOut",
+            render: (value) => (
+                <div>{value ? value.format("HH:mm") : "-"}</div>
+            ),
+            align: "center"
+        },
+        {
+            title: "Số giờ",
+            key: "time",
+            dataIndex: "time",
+            render: (value) => (
+                <div>{`${value ? value.toString() + "h" : "-"}`}</div>
+            ),
+            align: "center"
+        },
+        {
+            title: "Chức năng",
+            key: "func",
+            render: (_, record, __) => (
+                <div>
+                    <Pencil 
+                        onClick={() => {
+                            setOpenUpdate(true);
+                            setShiftSelect(record);
+                        }} 
+                        size={22} 
+                        strokeWidth={1} 
+                    />
+                </div>
+            ),
             align: "center"
         }
     ]
@@ -52,15 +96,19 @@ const ManageShift = (): JSX.Element => {
     }, [month, year]);
 
     const applyData = (list: ShiftData[]) => {
-        setShifts(list.map((item, index) => (
-            {
+        setShifts(list.map((item, index) => {
+            const timeIn = dayjs(item.timeIn);
+            const timeOut = item.timeOut ? dayjs(item.timeOut) : null;
+            
+            return ({
                 key: index.toString(),
                 id: item.id,
-                date: dayjs(item.timeIn).format("DD/MM/YYYY"),
-                timeIn: dayjs(item.timeIn).format("HH:mm"),
-                timeOut: item.timeOut ? dayjs(item.timeOut).format("HH:mm") : "-"
-            }
-        )))
+                date: timeIn,
+                timeIn: timeIn,
+                timeOut: timeOut,
+                time: item.time
+            })
+        }))
     }
 
     const getShifts = async (): Promise<void> => {
@@ -126,20 +174,34 @@ const ManageShift = (): JSX.Element => {
                         columns={columns} 
                         dataSource={shifts}
                         loading={getShiftsLoading} 
-                        pagination={false}  
+                        pagination={false} 
+                        scroll={screen.xs ? {x: "max-content"} : undefined} 
                         summary={() => (
                             <Table.Summary.Row>
-                                <Table.Summary.Cell index={0} colSpan={2} align="center">
+                                <Table.Summary.Cell index={0} colSpan={3} align="center">
                                     <strong>Tổng giờ:</strong>
                                 </Table.Summary.Cell>
-                                <Table.Summary.Cell index={2} colSpan={2} align="center">
+                                <Table.Summary.Cell index={3} colSpan={3} align="center">
                                     <strong>{`${totalHour}h`}</strong>
                                 </Table.Summary.Cell>
                             </Table.Summary.Row>
                         )}
+                        onRow={(record) => ({
+                            style: {userSelect: "none"}
+                        })}
                     />
                 </Col>
             </Row>
+            <UpdateShiftModal 
+                open={openUpdate}
+                setOpen={setOpenUpdate}
+                shiftId={shiftSelect.id}
+                dateProp={shiftSelect.date}
+                timeIn={shiftSelect.timeIn}
+                timeOut={shiftSelect.timeOut}
+                setShifts={setShifts}
+                setTotalHour={setTotalHour}
+            />
         </>
     )
 }
