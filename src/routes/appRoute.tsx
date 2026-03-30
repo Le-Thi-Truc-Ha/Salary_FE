@@ -1,16 +1,17 @@
-import { useContext, type JSX } from "react";
+import { lazy, useContext, type JSX } from "react";
 import { UserContext } from "../configs/globalVariable";
 import { Route, Routes } from "react-router-dom";
 import PublicRoute from "./publicRoute";
 import PrivateRoute from "./privateRoute";
 import NotFound from "../components/Other/NotFound";
 import Loading from "../components/Other/Loading";
-import Login from "../components/Other/Login";
-import HomeEmployee from "../components/Employee/HomeEmployee";
-import HeaderEmployee from "../components/Employee/HeaderEmployee";
-import HeaderAdmin from "../components/Admin/HeaderAdmin";
-import HomeAdmin from "../components/Admin/HomeAdmin";
-import ManageShift from "../components/Admin/ManageShift";
+
+const Login = lazy(() => import("../components/Other/Login"));
+const HomeEmployee = lazy(() => import("../components/Employee/HomeEmployee"));
+const HeaderEmployee = lazy(() => import("../components/Employee/HeaderEmployee"));
+const HeaderAdmin = lazy(() => import("../components/Admin/HeaderAdmin"));
+const HomeAdmin = lazy(() => import("../components/Admin/HomeAdmin"));
+const ManageShift = lazy(() => import("../components/Admin/ManageShift"));
 
 const AppRoute = (): JSX.Element => {
     const {isLoading} = useContext(UserContext);
